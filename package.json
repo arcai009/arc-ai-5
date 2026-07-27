@@ -1,0 +1,48 @@
+{
+  "name": "arc-ai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "electron:install": "npm --prefix electron install",
+    "electron:dev": "npm --prefix electron run build && npm --prefix electron start",
+    "electron:build": "npm --prefix electron run dist"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.102",
+    "@ai-sdk/openai": "^3.0.88",
+    "@ai-sdk/react": "^3.0.237",
+    "@clerk/nextjs": "^7.6.1",
+    "@prisma/adapter-pg": "^7.9.0",
+    "@prisma/client": "^7.9.0",
+    "ai": "^6.0.235",
+    "dodopayments": "^2.43.0",
+    "e2b": "^2.36.0",
+    "next": "16.2.11",
+    "pg": "^8.22.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-markdown": "^10.1.0",
+    "react-syntax-highlighter": "^16.1.1",
+    "remark-gfm": "^4.0.1",
+    "svix": "^1.99.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/typography": "^0.5.20",
+    "@types/node": "^20",
+    "@types/pg": "^8.20.0",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "dotenv": "^17.4.2",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.11",
+    "prisma": "^7.9.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

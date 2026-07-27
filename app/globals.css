@@ -1,0 +1,66 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --surface: #f8f8fb;
+  --surface-border: rgba(0, 0, 0, 0.08);
+
+  --accent-1: #6366f1;
+  --accent-2: #a855f7;
+  --accent-3: #ec4899;
+  --accent-gradient: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+  --accent-solid: #7c3aed;
+  --accent-soft: rgba(124, 58, 237, 0.1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-accent: var(--accent-solid);
+  --color-accent-1: var(--accent-1);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --surface: #161618;
+  --surface-border: rgba(255, 255, 255, 0.1);
+  --accent-soft: rgba(168, 85, 247, 0.16);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+.brand-gradient-text {
+  background: var(--accent-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.btn-accent {
+  background: var(--accent-gradient);
+  color: #ffffff;
+  transition:
+    filter 150ms ease,
+    transform 150ms ease;
+}
+
+.btn-accent:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.btn-accent:disabled {
+  opacity: 0.55;
+}
