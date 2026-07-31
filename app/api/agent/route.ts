@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { anthropic } from "@ai-sdk/anthropic";
 import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
 import {
   convertToModelMessages,
   stepCountIs,
@@ -26,7 +27,9 @@ import {
 import { createAgentTools, createLocalAgentTools } from "@/lib/agent-tools";
 
 function resolveLanguageModel(modelId: string, provider: string): LanguageModel {
-  return provider === "anthropic" ? anthropic(modelId) : openai(modelId);
+  if (provider === "anthropic") return anthropic(modelId);
+  if (provider === "google") return google(modelId);
+  return openai(modelId);
 }
 
 async function ensureSandboxSession(
