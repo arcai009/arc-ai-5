@@ -25,7 +25,7 @@ export const MODELS: ModelConfig[] = [
     creditsPer1kTokens: 10,
   },
   {
-    id: "gemini-2.5-flash",
+    id: "gemini-flash-latest",
     label: "Arc Beacon",
     provider: "google",
     envKey: "GOOGLE_GENERATIVE_AI_API_KEY",
