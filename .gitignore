@@ -55,3 +55,7 @@ next-env.d.ts
 /.agents/
 /.claude/skills/
 /.windsurf/
+
+# unrelated sibling projects living in this same folder, not part of arc-ai
+/keyword-search-app/
+/cookie-manager-app/

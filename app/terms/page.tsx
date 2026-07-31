@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+
+export const metadata: Metadata = {
+  title: "Terms & Conditions",
+  description: "The terms and conditions for using Arc AI's chat and coding agent platform.",
+  alternates: { canonical: "/terms" },
+};
 
 export default async function TermsPage() {
   const { userId } = await auth();

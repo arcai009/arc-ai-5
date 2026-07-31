@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+
+export const metadata: Metadata = {
+  title: "Support",
+  description: "Get help with Arc AI — credits, billing, and frequently asked questions.",
+  alternates: { canonical: "/support" },
+};
 
 const FAQS = [
   {

@@ -1,6 +1,14 @@
+import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+
+export const metadata: Metadata = {
+  title: "Download for Windows",
+  description:
+    "Download the Arc AI desktop app for Windows — chat and run the coding agent locally on your own computer with permission-gated file and command access.",
+  alternates: { canonical: "/download" },
+};
 
 export default async function DownloadPage() {
   const { userId } = await auth();

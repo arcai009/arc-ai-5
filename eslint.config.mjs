@@ -14,6 +14,9 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // The Electron desktop app is a separate project with its own build step.
     "electron/**",
+    // Unrelated sibling projects living in this same folder, not part of arc-ai.
+    "keyword-search-app/**",
+    "cookie-manager-app/**",
   ]),
 ]);
 

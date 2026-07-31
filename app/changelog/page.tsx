@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+
+export const metadata: Metadata = {
+  title: "Changelog",
+  description: "What's shipped in Arc AI so far.",
+  alternates: { canonical: "/changelog" },
+};
 
 const ENTRIES = [
   {
