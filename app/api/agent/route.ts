@@ -16,6 +16,7 @@ import type { SandboxSession } from "@/app/generated/prisma/client";
 import { DEFAULT_MODEL_ID, getModel, isModelConfigured } from "@/lib/models";
 import { getMessageText, serializeStepContent } from "@/lib/chat-utils";
 import { creditsForTokens, getBalanceInTx, RESERVE_TOKENS, reservationAmount } from "@/lib/credits";
+import { checkMessageLimit } from "@/lib/message-limits";
 import {
   connectSandbox,
   createSandbox,
@@ -128,6 +129,16 @@ export async function POST(req: Request) {
   });
   if (!conversation) {
     return NextResponse.json({ error: "Conversation not found" }, { status: 404 });
+  }
+
+  const limit = await checkMessageLimit(user.id, user.email);
+  if (!limit.allowed) {
+    return NextResponse.json(
+      {
+        error: `The free plan is limited to ${limit.limit} messages. Upgrade to Pro to keep chatting.`,
+      },
+      { status: 403 },
+    );
   }
 
   const llmReserveAmount = reservationAmount(model);

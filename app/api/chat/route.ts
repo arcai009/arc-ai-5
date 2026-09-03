@@ -13,6 +13,7 @@ import { db } from "@/lib/db";
 import { DEFAULT_MODEL_ID, getModel, isModelConfigured } from "@/lib/models";
 import { getMessageText } from "@/lib/chat-utils";
 import { creditsForTokens, getBalanceInTx, RESERVE_TOKENS, reservationAmount } from "@/lib/credits";
+import { checkMessageLimit } from "@/lib/message-limits";
 
 function resolveLanguageModel(modelId: string, provider: string): LanguageModel {
   if (provider === "anthropic") return anthropic(modelId);
@@ -55,6 +56,16 @@ export async function POST(req: Request) {
   });
   if (!conversation) {
     return NextResponse.json({ error: "Conversation not found" }, { status: 404 });
+  }
+
+  const limit = await checkMessageLimit(user.id, user.email);
+  if (!limit.allowed) {
+    return NextResponse.json(
+      {
+        error: `The free plan is limited to ${limit.limit} messages. Upgrade to Pro to keep chatting.`,
+      },
+      { status: 403 },
+    );
   }
 
   const reserveAmount = reservationAmount(model);
