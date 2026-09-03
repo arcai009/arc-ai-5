@@ -4,6 +4,7 @@ import { getBalance } from "@/lib/credits";
 import { requireAppUser } from "@/lib/current-user";
 import { AppShell } from "@/components/AppShell";
 import { NewChatButton } from "@/components/chat/NewChatButton";
+import { PendingPromptStarter } from "@/components/chat/PendingPromptStarter";
 
 export default async function ChatIndexPage() {
   const { user, email } = await requireAppUser();
@@ -23,6 +24,7 @@ export default async function ChatIndexPage() {
   return (
     <AppShell activeTab="chat" recents={conversations} email={email} balance={balance}>
       <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center text-gray-500 dark:text-gray-400">
+        <PendingPromptStarter />
         <p>Start a new chat to begin.</p>
         <div className="w-full max-w-xs">
           <NewChatButton />

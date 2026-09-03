@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useChat } from "@ai-sdk/react";
+import { autosendKey } from "@/components/chat/PendingPromptStarter";
 import { DefaultChatTransport } from "ai";
 import type { UIMessage } from "ai";
 import { MessageContent } from "@/components/chat/MessageContent";
@@ -46,6 +47,26 @@ export function ChatThread({
   const isBusy = status === "submitted" || status === "streaming";
   const isThinking = status === "submitted";
   const disabled = isBusy || outOfCredits;
+
+  // Auto-send a prompt carried over from the landing page composer, once.
+  const autosent = useRef(false);
+  useEffect(() => {
+    if (autosent.current || outOfCredits) return;
+    let pending: string | null = null;
+    try {
+      pending = localStorage.getItem(autosendKey(conversationId));
+    } catch {
+      return;
+    }
+    if (!pending) return;
+    autosent.current = true;
+    try {
+      localStorage.removeItem(autosendKey(conversationId));
+    } catch {
+      // ignore
+    }
+    sendMessage({ text: pending });
+  }, [conversationId, outOfCredits, sendMessage]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

@@ -10,6 +10,12 @@ export function SiteHeader({ signedIn }: { signedIn: boolean }) {
       </Link>
       <nav className="flex items-center gap-4 text-sm">
         <Link
+          href="/pricing"
+          className="hidden text-gray-500 transition-colors hover:text-foreground sm:inline dark:text-gray-400"
+        >
+          Pricing
+        </Link>
+        <Link
           href="/download"
           className="hidden text-gray-500 transition-colors hover:text-foreground sm:inline dark:text-gray-400"
         >
