@@ -5,7 +5,7 @@ import { Prisma } from "@/app/generated/prisma/client";
 import {
   getDodoClient,
   isDodoConfigured,
-  PRO_MONTHLY_CREDITS,
+  planForPurpose,
   TOPUP_CREDITS,
   CREDITS_PER_DOLLAR,
 } from "@/lib/dodo";
@@ -97,17 +97,22 @@ async function handleEvent(tx: Prisma.TransactionClient, payload: WebhookPayload
         ? new Date(data.next_billing_date as string)
         : null;
 
+      // The plan (tier + monthly credits) is derived from the checkout purpose
+      // carried through in metadata; unknown/legacy values fall back to Pro.
+      const purpose = typeof metadata.purpose === "string" ? metadata.purpose : "";
+      const { tier, monthlyCredits } = planForPurpose(purpose);
+
       await tx.subscription.upsert({
         where: { userId },
         create: {
           userId,
-          tier: "PRO",
+          tier,
           status: "ACTIVE",
           currentPeriodEnd: nextBillingDate,
           paymentProviderCustomerId: customerId,
         },
         update: {
-          tier: "PRO",
+          tier,
           status: "ACTIVE",
           currentPeriodEnd: nextBillingDate,
           paymentProviderCustomerId: customerId,
@@ -117,7 +122,7 @@ async function handleEvent(tx: Prisma.TransactionClient, payload: WebhookPayload
       await tx.creditLedger.create({
         data: {
           userId,
-          delta: PRO_MONTHLY_CREDITS,
+          delta: monthlyCredits,
           reason: "subscription_grant",
           relatedCallId: subscriptionId ?? null,
         },

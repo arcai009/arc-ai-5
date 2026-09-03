@@ -24,10 +24,14 @@ export function isUnlimitedEmail(email: string): boolean {
   return unlimitedEmails().has(email.trim().toLowerCase());
 }
 
-/** A user is "Pro" only while their subscription is both the PRO tier and ACTIVE. */
+/** A user is on a paid plan while their subscription is any non-FREE tier and ACTIVE. */
 export async function isProUser(userId: string): Promise<boolean> {
   const subscription = await db.subscription.findUnique({ where: { userId } });
-  return subscription?.tier === "PRO" && subscription?.status === "ACTIVE";
+  return (
+    subscription?.status === "ACTIVE" &&
+    subscription?.tier !== undefined &&
+    subscription.tier !== "FREE"
+  );
 }
 
 /** Number of user-authored messages the user has sent, across every conversation. */

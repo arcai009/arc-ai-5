@@ -33,7 +33,8 @@ export async function POST(req: Request) {
 
   const body = (await req.json()) as { purpose?: CheckoutPurpose; amountUsd?: number };
   const purpose = body.purpose;
-  if (purpose !== "pro_subscription" && purpose !== "topup") {
+  const VALID_PURPOSES: CheckoutPurpose[] = ["pro_subscription", "pro_plus", "ultra", "topup"];
+  if (!purpose || !VALID_PURPOSES.includes(purpose)) {
     return NextResponse.json({ error: "Invalid purpose" }, { status: 400 });
   }
 
