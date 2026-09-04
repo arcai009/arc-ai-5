@@ -10,7 +10,7 @@ import {
   type UIMessage,
 } from "ai";
 import { db } from "@/lib/db";
-import { DEFAULT_MODEL_ID, getModel, isModelConfigured } from "@/lib/models";
+import { DEFAULT_MODEL_ID, isModelConfigured, resolveConfiguredModel } from "@/lib/models";
 import { getMessageText } from "@/lib/chat-utils";
 import { creditsForTokens, getBalanceInTx, RESERVE_TOKENS, reservationAmount } from "@/lib/credits";
 import { checkMessageLimit } from "@/lib/message-limits";
@@ -42,9 +42,12 @@ export async function POST(req: Request) {
   };
   const { messages, modelId = DEFAULT_MODEL_ID, conversationId } = body;
 
-  const model = getModel(modelId);
+  const model = resolveConfiguredModel(modelId);
   if (!model) {
-    return NextResponse.json({ error: "Unknown model" }, { status: 400 });
+    return NextResponse.json(
+      { error: "No chat model is configured yet. Add a model API key to continue." },
+      { status: 400 },
+    );
   }
 
   if (!conversationId) {

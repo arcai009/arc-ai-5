@@ -42,3 +42,28 @@ export function getModel(modelId: string): ModelConfig | undefined {
 export function isModelConfigured(model: ModelConfig): boolean {
   return Boolean(process.env[model.envKey]);
 }
+
+/** Models that actually have an API key set (server-side). */
+export function configuredModels(): ModelConfig[] {
+  return MODELS.filter(isModelConfigured);
+}
+
+/** Client-safe list ({id,label}) of models that work, for the model picker. */
+export function configuredModelOptions(): { id: string; label: string }[] {
+  return configuredModels().map((m) => ({ id: m.id, label: m.label }));
+}
+
+/** The default model that is actually usable, falling back to the static default. */
+export function defaultConfiguredModelId(): string {
+  return configuredModels()[0]?.id ?? DEFAULT_MODEL_ID;
+}
+
+/**
+ * Resolve the model to actually run: the chosen one if it has a key, otherwise
+ * the first configured model. Returns undefined only when nothing is configured.
+ */
+export function resolveConfiguredModel(modelId: string): ModelConfig | undefined {
+  const chosen = getModel(modelId);
+  if (chosen && isModelConfigured(chosen)) return chosen;
+  return configuredModels()[0];
+}

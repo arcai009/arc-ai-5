@@ -6,6 +6,7 @@ import { requireAppUser } from "@/lib/current-user";
 import { SANDBOX_MAX_DURATION_MS } from "@/lib/sandbox";
 import { AppShell } from "@/components/AppShell";
 import { AgentThread } from "@/components/agent/AgentThread";
+import { configuredModelOptions, defaultConfiguredModelId } from "@/lib/models";
 
 export default async function AgentConversationPage({
   params,
@@ -61,6 +62,8 @@ export default async function AgentConversationPage({
         outOfCredits={balance <= 0}
         sessionExpiresAt={sessionExpiresAt}
         sessionEnded={sessionEnded}
+        availableModels={configuredModelOptions()}
+        defaultModelId={defaultConfiguredModelId()}
       />
     </AppShell>
   );

@@ -46,15 +46,19 @@ export function AgentThread({
   outOfCredits,
   sessionExpiresAt,
   sessionEnded,
+  availableModels,
+  defaultModelId,
 }: {
   conversationId: string;
   initialMessages: UIMessage[];
   outOfCredits: boolean;
   sessionExpiresAt: number | null;
   sessionEnded: boolean;
+  availableModels?: { id: string; label: string }[];
+  defaultModelId?: string;
 }) {
   const router = useRouter();
-  const [modelId, setModelId] = useState(DEFAULT_MODEL_ID);
+  const [modelId, setModelId] = useState(defaultModelId ?? DEFAULT_MODEL_ID);
   const [input, setInput] = useState("");
   const [ending, setEnding] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
@@ -107,7 +111,12 @@ export function AgentThread({
   return (
     <div className="flex flex-1 flex-col">
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-black/10 px-6 py-3 dark:border-white/15">
-        <ModelPicker value={modelId} onChange={setModelId} disabled={isBusy || sessionEnded} />
+        <ModelPicker
+          value={modelId}
+          onChange={setModelId}
+          disabled={isBusy || sessionEnded}
+          models={availableModels}
+        />
         <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
           {sessionEnded ? (
             <span>Session ended</span>

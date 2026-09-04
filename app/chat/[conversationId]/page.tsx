@@ -5,6 +5,7 @@ import { getBalance } from "@/lib/credits";
 import { requireAppUser } from "@/lib/current-user";
 import { AppShell } from "@/components/AppShell";
 import { ChatThread } from "@/components/chat/ChatThread";
+import { configuredModelOptions, defaultConfiguredModelId } from "@/lib/models";
 
 export default async function ConversationPage({
   params,
@@ -49,6 +50,8 @@ export default async function ConversationPage({
         conversationId={conversation.id}
         initialMessages={initialMessages}
         outOfCredits={balance <= 0}
+        availableModels={configuredModelOptions()}
+        defaultModelId={defaultConfiguredModelId()}
       />
     </AppShell>
   );

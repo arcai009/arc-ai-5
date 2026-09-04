@@ -25,13 +25,17 @@ export function ChatThread({
   conversationId,
   initialMessages,
   outOfCredits,
+  availableModels,
+  defaultModelId,
 }: {
   conversationId: string;
   initialMessages: UIMessage[];
   outOfCredits: boolean;
+  availableModels?: { id: string; label: string }[];
+  defaultModelId?: string;
 }) {
   const router = useRouter();
-  const [modelId, setModelId] = useState(DEFAULT_MODEL_ID);
+  const [modelId, setModelId] = useState(defaultModelId ?? DEFAULT_MODEL_ID);
   const [input, setInput] = useState("");
 
   const { messages, sendMessage, status, error } = useChat({
@@ -79,7 +83,12 @@ export function ChatThread({
   return (
     <div className="flex flex-1 flex-col">
       <div className="flex items-center justify-between border-b border-black/10 px-6 py-3 dark:border-white/15">
-        <ModelPicker value={modelId} onChange={setModelId} disabled={isBusy} />
+        <ModelPicker
+          value={modelId}
+          onChange={setModelId}
+          disabled={isBusy}
+          models={availableModels}
+        />
       </div>
 
       <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-6 py-4">
